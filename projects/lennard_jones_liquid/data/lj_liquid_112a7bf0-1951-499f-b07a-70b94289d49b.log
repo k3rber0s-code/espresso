@@ -1,0 +1,147 @@
+name: lj_liquid.py
+job_id: lj_liquid.py
+npart:$512 density:$4.8e-05 kT:$390.0
+LJ-parameters:
+{'epsilon': 0.32051282051282054, 'sigma': 3.4, 'cutoff': 8.5, 'shift': 0.004079222783999998, 'offset': 0.0, 'min': 0.0}
+Simulate 511 argon particles in a cubic box of length 220.1284832596417 A at density 4.8e-05 particles/A^3 and temperature 390.0 K.
+Interactions:
+Start with minimal distance 3.7761619374284168
+Start warmup integration:
+At maximum 10 times 20 steps
+Stop if minimal distance is larger than 3.06
+LennardJonesInteraction({'epsilon': 0.32051282051282054, 'sigma': 3.4, 'cutoff': 8.5, 'shift': 0.004079222783999998, 'offset': 0.0, 'min': 0.0})
+minimization: -1.73e+00
+
+Start integration: run 1000 times 1000 steps
+run 0 at time=0.00
+run 1 at time=10.00
+run 2 at time=20.00
+run 3 at time=30.00
+run 4 at time=40.00
+run 5 at time=50.00
+run 6 at time=60.00
+run 7 at time=70.00
+run 8 at time=80.00
+run 9 at time=90.00
+run 10 at time=100.00
+run 11 at time=110.00
+run 12 at time=120.00
+run 13 at time=130.00
+run 14 at time=140.00
+run 15 at time=150.00
+run 16 at time=160.00
+run 17 at time=170.00
+run 18 at time=180.00
+run 19 at time=190.00
+run 20 at time=200.00
+run 21 at time=210.00
+run 22 at time=220.00
+run 23 at time=230.00
+run 24 at time=240.00
+run 25 at time=250.00
+run 26 at time=260.00
+run 27 at time=270.00
+run 28 at time=280.00
+run 29 at time=290.00
+run 30 at time=300.00
+run 31 at time=310.00
+run 32 at time=320.00
+run 33 at time=330.00
+run 34 at time=340.00
+run 35 at time=350.00
+run 36 at time=360.00
+run 37 at time=370.00
+run 38 at time=380.00
+run 39 at time=390.00
+run 40 at time=400.00
+run 41 at time=410.00
+run 42 at time=420.00
+run 43 at time=430.00
+run 44 at time=440.00
+run 45 at time=450.00
+run 46 at time=460.00
+run 47 at time=470.00
+run 48 at time=480.00
+run 49 at time=490.00
+run 50 at time=500.00
+run 51 at time=510.00
+run 52 at time=520.00
+run 53 at time=530.00
+run 54 at time=540.00
+run 55 at time=550.00
+run 56 at time=560.00
+run 57 at time=570.00
+run 58 at time=580.00
+run 59 at time=590.00
+run 60 at time=600.00
+run 61 at time=610.00
+run 62 at time=620.00
+run 63 at time=630.00
+run 64 at time=640.00
+run 65 at time=650.00
+run 66 at time=660.00
+run 67 at time=670.00
+run 68 at time=680.00
+run 69 at time=690.00
+run 70 at time=700.00
+run 71 at time=710.00
+run 72 at time=720.00
+run 73 at time=730.00
+run 74 at time=740.00
+run 75 at time=750.00
+run 76 at time=760.00
+run 77 at time=770.00
+run 78 at time=780.00
+run 79 at time=790.00
+run 80 at time=800.00
+run 81 at time=810.00
+run 82 at time=820.00
+run 83 at time=830.00
+run 84 at time=840.00
+run 85 at time=850.00
+run 86 at time=860.00
+run 87 at time=870.00
+run 88 at time=880.00
+run 89 at time=890.00
+run 90 at time=900.00
+run 91 at time=910.00
+run 92 at time=920.00
+run 93 at time=930.00
+run 94 at time=940.00
+run 95 at time=950.00
+run 96 at time=960.00
+run 97 at time=970.00
+run 98 at time=980.00
+run 99 at time=990.00
+run 100 at time=1000.00
+run 101 at time=1010.00
+run 102 at time=1020.00
+run 103 at time=1030.00
+run 104 at time=1040.00
+run 105 at time=1050.00
+run 106 at time=1060.00
+run 107 at time=1070.00
+run 108 at time=1080.00
+run 109 at time=1090.00
+run 110 at time=1100.00
+run 111 at time=1110.00
+run 112 at time=1120.00
+run 113 at time=1130.00
+run 114 at time=1140.00
+run 115 at time=1150.00
+run 116 at time=1160.00
+run 117 at time=1170.00
+run 118 at time=1180.00
+run 119 at time=1190.00
+run 120 at time=1200.00
+run 121 at time=1210.00
+run 122 at time=1220.00
+run 123 at time=1230.00
+run 124 at time=1240.00
+run 125 at time=1250.00
+run 126 at time=1260.00
+run 127 at time=1270.00
+run 128 at time=1280.00
+run 129 at time=1290.00
+run 130 at time=1300.00
+run 131 at time=1310.00
