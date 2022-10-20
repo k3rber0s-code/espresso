@@ -1,0 +1,69 @@
+name: lj_liquid.py
+job_id: lj_liquid.py
+npart:$512 density:$9.6e-05 kT:$360.0
+LJ-parameters:
+{'epsilon': 0.3472222222222222, 'sigma': 3.4, 'cutoff': 8.5, 'shift': 0.004079222783999998, 'offset': 0.0, 'min': 0.0}
+Simulate 511 argon particles in a cubic box of length 174.7160929472597 A at density 9.6e-05 particles/A^3 and temperature 360.0 K.
+Interactions:
+Start with minimal distance 2.9971417159380853
+Start warmup integration:
+At maximum 10 times 20 steps
+Stop if minimal distance is larger than 3.06
+LennardJonesInteraction({'epsilon': 0.3472222222222222, 'sigma': 3.4, 'cutoff': 8.5, 'shift': 0.004079222783999998, 'offset': 0.0, 'min': 0.0})
+minimization: +5.78e-01
+minimization: -3.07e+00
+
+Start integration: run 1000 times 1000 steps
+run 0 at time=0.00
+run 1 at time=10.00
+run 2 at time=20.00
+run 3 at time=30.00
+run 4 at time=40.00
+run 5 at time=50.00
+run 6 at time=60.00
+run 7 at time=70.00
+run 8 at time=80.00
+run 9 at time=90.00
+run 10 at time=100.00
+run 11 at time=110.00
+run 12 at time=120.00
+run 13 at time=130.00
+run 14 at time=140.00
+run 15 at time=150.00
+run 16 at time=160.00
+run 17 at time=170.00
+run 18 at time=180.00
+run 19 at time=190.00
+run 20 at time=200.00
+run 21 at time=210.00
+run 22 at time=220.00
+run 23 at time=230.00
+run 24 at time=240.00
+run 25 at time=250.00
+run 26 at time=260.00
+run 27 at time=270.00
+run 28 at time=280.00
+run 29 at time=290.00
+run 30 at time=300.00
+run 31 at time=310.00
+run 32 at time=320.00
+run 33 at time=330.00
+run 34 at time=340.00
+run 35 at time=350.00
+run 36 at time=360.00
+run 37 at time=370.00
+run 38 at time=380.00
+run 39 at time=390.00
+run 40 at time=400.00
+run 41 at time=410.00
+run 42 at time=420.00
+run 43 at time=430.00
+run 44 at time=440.00
+run 45 at time=450.00
+run 46 at time=460.00
+run 47 at time=470.00
+run 48 at time=480.00
+run 49 at time=490.00
+run 50 at time=500.00
+run 51 at time=510.00
+run 52 at time=520.00
