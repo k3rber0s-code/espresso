@@ -120,7 +120,7 @@ t_steps = 1000
 for t in range(t_steps):
     logfile.write("step {} of {}\n".format(t, t_steps))
     system.integrator.run(warm_steps)
-    rg = espressomd.analyze.Analysis.calc_rg(chain_start=0, number_of_chains=1, chain_lenght=len(system.part[:]))
-    obsfile.write(f"{rg[0]}\n")
+    gyration_tensor = espressomd.analyze.Analysis.calc_rg()
+    obsfile.write(f"{gyration_tensor['Rg^2']}\n")
 
 
