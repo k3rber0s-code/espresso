@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013-2022 The ESPResSo project
+# Copyright (C) 2013-2019 The ESPResSo project
 #
 # This file is part of ESPResSo.
 #
@@ -17,18 +17,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
-Set up a linear polymer.
+This sample sets up a polymer.
 """
 import espressomd
-import espressomd.interactions
-import espressomd.polymer
-import espressomd.io.writer.vtf  # pylint: disable=import-error
+espressomd.assert_features(["WCA"])
+from espressomd import thermostat
+from espressomd import interactions
+from espressomd import polymer
+from espressomd.io.writer import vtf  # pylint: disable=import-error
+import numpy as np
 import uuid
 import argparse
-
-espressomd.assert_features(["WCA"])
-
-import numpy as np
 
 # Default simulation values
 #############################################################
@@ -37,63 +36,79 @@ job_id = uuid.uuid4()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--n_polymers", nargs="?", default=1, const=1,  type=int, help="Number of polymers to simulate.")
-parser.add_argument("--n_beads_per_chain", nargs="?", default=50, const=50, type=int, help="Number of beads per one chain.")
+parser.add_argument("--n_beads_per_chain", nargs="?", default=5, const=5, type=int, help="Number of beads per one chain.")
 parser.add_argument("--box_l", nargs="?", default=100, const=100, type=int, help="Size of the simulation box.")
 args = parser.parse_args()
-
 
 # System parameters
 #############################################################
 
 system = espressomd.System(box_l=[args.box_l, args.box_l, args.box_l])
-np.random.seed(seed=42)
+system.set_random_state_PRNG()
+#system.seed = system.cell_system.get_state()['n_nodes'] * [1234]
+np.random.seed(seed=system.seed)
 
 system.time_step = 0.01
 system.cell_system.skin = 0.4
+system.thermostat.set_langevin(kT=1.0, gamma=1.0, seed=42)
 system.cell_system.set_n_square(use_verlet_lists=False)
-#outfile = open('polymer.vtf', 'w')
 
-system.non_bonded_inter[0, 0].wca.set_params(epsilon=1, sigma=1)
+system.non_bonded_inter[0, 0].wca.set_params(
+    epsilon=1, sigma=1)
 
-fene = espressomd.interactions.FeneBond(k=10, d_r_max=2)
+fene = interactions.FeneBond(k=10, d_r_max=2)
 system.bonded_inter.add(fene)
-espressomd.polymer.create_polymer(N_P=args.n_polymers, MPC=args.n_beads_per_chain, bond_length=1.0, bond=fene)
 
-# positions = espressomd.polymer.linear_polymer_positions(
-#     n_polymers=1, beads_per_chain=50, bond_length=1.0, seed=3210)
-# previous_part = None
-# for pos in positions[0]:
-#     part = system.part.add(pos=pos)
-#     if previous_part:
-#         part.add_bond((fene, previous_part))
-#     previous_part = part
 
-#espressomd.io.writer.vtf.writevsf(system, outfile)
+positions = polymer.positions(n_polymers=args.n_polymers,
+                              beads_per_chain=args.n_beads_per_chain,
+                              bond_length=1.0,
+                              seed=3210)
+for i, pos in enumerate(positions[0]):
+    id = len(system.part)
+    system.part.add(id=id, pos=pos)
+    if i > 0:
+        system.part[id].add_bond((fene, id - 1))
+
 
 #############################################################
 # Files
 #############################################################
 logfile = open(f"{name}_{args.n_beads_per_chain}_{job_id}.log", 'w')
-xyzfile = open(f"{name}_{args.n_beads_per_chain}_{job_id}.xyz", 'w')
 obsfile = open(f"{name}_{args.n_beads_per_chain}_{job_id}.obs", 'w')
-
 
 #############################################################
 #      Warmup                                               #
 #############################################################
 
-# minimize energy using min_dist as the convergence criterion
-system.integrator.set_steepest_descent(f_max=0, gamma=1e-3,
-                                       max_displacement=0.01)
-while system.analysis.min_dist() < 0.95:
-    logfile.write(f"minimization: {system.analysis.energy()['total']:+.2e}\n")
-    system.integrator.run(20)
+warm_steps = 10
+wca_cap = 1
+system.force_cap = wca_cap
+i = 0
+act_min_dist = system.analysis.min_dist()
 
-logfile.write(f"minimization: {system.analysis.energy()['total']:+.2e}\n")
-system.integrator.set_vv()
+# warmup with zero temperature to remove overlaps
+system.thermostat.set_langevin(kT=0.0, gamma=1.0)
 
-# activate thermostat
-system.thermostat.set_langevin(kT=1.0, gamma=1.0, seed=42)
+# slowly ramp un up the cap
+while (act_min_dist < 0.95):
+    logfile.write("min_dist: {} \t force cap: {}\n".format(act_min_dist, wca_cap))
+    system.integrator.run(warm_steps)
+    system.part[:].v = [0, 0, 0]
+    # Warmup criterion
+    act_min_dist = system.analysis.min_dist()
+    wca_cap = wca_cap * 1.01
+    system.force_cap = wca_cap
+
+# remove force cap
+wca_cap = 0
+system.force_cap = wca_cap
+system.integrator.run(warm_steps * 10)
+
+# restore simulation temperature
+system.thermostat.set_langevin(kT=1.0, gamma=1.0)
+system.integrator.run(warm_steps * 10)
+logfile.write("Finished warmup\n")
 
 
 #############################################################
@@ -103,11 +118,9 @@ system.thermostat.set_langevin(kT=1.0, gamma=1.0, seed=42)
 logfile.write("simulating...\n")
 t_steps = 1000
 for t in range(t_steps):
-    logfile.write(f"step {t + 1} of {t_steps}\n", end='\r', flush=True)
-    system.integrator.run(10)
-    gyration_tensor = system.analysis.gyration_tensor()
-    # xyzfile.write(f"%\n")
-    # for p in system.part:
-    #     xyzfile.write(f"part {p.pos[0]} {p.pos[1]} {p.pos[2]}")
-    #     xyzfile.write(f"\n")
-    obsfile.write(f"{gyration_tensor['Rg^2']}\n")
+    logfile.write("step {} of {}\n".format(t, t_steps))
+    system.integrator.run(warm_steps)
+    rg = espressomd.analyze.Analysis.calc_rg(chain_start=0, number_of_chains=1, chain_lenght=len(system.part[:]))
+    obsfile.write(f"{rg[0]}\n")
+
+
